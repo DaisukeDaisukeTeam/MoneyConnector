@@ -35,10 +35,12 @@ class SimpleEconomy implements MoneyConnector
     public function getAllMoney(): array
     {
         //HACK
-        /** @var Account[] $instances */
-        $instances = (function(){
+        $function = function(){
             return self::$instances;
-        })->bindTo(null, Account::class)();
+        };
+        $function = $function->bindTo(null, Account::class);
+        /** @var Account[] $instances */
+        $instances = $function();
 
         $allMoney = [];
         foreach ($instances as $account) {
