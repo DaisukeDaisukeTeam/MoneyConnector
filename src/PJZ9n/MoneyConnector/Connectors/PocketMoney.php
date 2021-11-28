@@ -25,7 +25,7 @@ class PocketMoney implements MoneyConnector
      */
     public function getMonetaryUnit(): string
     {
-        return "M";//HACK
+        return "";//HACK
     }
     
     /**
@@ -33,7 +33,6 @@ class PocketMoney implements MoneyConnector
      */
     public function getAllMoney(): array
     {
-        
         $property = new \ReflectionProperty($this->parentAPI, "users");
         $property->setAccessible(true);
         $users = $property->getValue($this->parentAPI);
