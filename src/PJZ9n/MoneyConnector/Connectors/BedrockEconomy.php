@@ -60,7 +60,6 @@ class BedrockEconomy implements MoneyConnector
     {
         $cache = $this->getCacheByName($player);
         return $this->getBalance($cache);
-        
     }
     
     protected function getBalance(?SessionCache $cache): ?int

@@ -29,7 +29,6 @@ use pocketmine\Server;
 
 class LevelMoneySystem implements MoneyConnector
 {
-    
     /** @var PLevelMoneySystem */
     private $parentAPI;
     

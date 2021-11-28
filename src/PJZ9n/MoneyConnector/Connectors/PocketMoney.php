@@ -9,7 +9,6 @@ use PocketMoney\PocketMoney as PluginPocketMoney;
 
 class PocketMoney implements MoneyConnector
 {
-    
     protected const KEYS_MONEY = "money";
     
     /** @var PluginPocketMoney */

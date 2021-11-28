@@ -72,11 +72,11 @@ abstract class MoneyConnectorUtils
             case "pocketmoney":
                 return new PocketMoney();
                 break;
-
+            
         }
         return null;
     }
-
+    
     /**
      * Returns the corresponding connector from the detected API. Returns null if not found.
      *
