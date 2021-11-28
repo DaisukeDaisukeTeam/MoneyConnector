@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace PJZ9n\MoneyConnector;
 
+use PJZ9n\MoneyConnector\Connectors\PocketMoney;
+use PocketMoney\PocketMoney as PluginPocketMoney;
 use cooldogedev\BedrockEconomy\BedrockEconomy as PBedrockEconomy;
 use hayao\main;
 use metowa1227\moneysystem\api\core\API;
@@ -67,6 +69,9 @@ abstract class MoneyConnectorUtils
             case "simpleeconomy":
                 return new SimpleEconomy();
                 break;
+            case "pocketmoney":
+                return new PocketMoney();
+                break;
 
         }
         return null;
@@ -91,11 +96,14 @@ abstract class MoneyConnectorUtils
         if (class_exists(PBedrockEconomy::class)) {
             return new BedrockEconomy();
         }
+        if (class_exists(SimpleEconomyAPI::class)) {
+            return new LevelMoneySystem();
+        }
         if (class_exists(main::class)) {
             return new LevelMoneySystem();
         }
-        if (class_exists(SimpleEconomyAPI::class)) {
-            return new LevelMoneySystem();
+        if (class_exists(PluginPocketMoney::class)) {
+            return new PocketMoney();
         }
         return null;
     }
