@@ -72,7 +72,6 @@ abstract class MoneyConnectorUtils
             case "pocketmoney":
                 return new PocketMoney();
                 break;
-            
         }
         return null;
     }
