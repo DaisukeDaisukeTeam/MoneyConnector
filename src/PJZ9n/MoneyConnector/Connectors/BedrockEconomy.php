@@ -27,7 +27,7 @@ class BedrockEconomy implements MoneyConnector
      */
     public function getMonetaryUnit(): string
     {
-        return $this->parentPlugin->getCurrencyManager()->getSymbol();//HACK
+        return $this->parentPlugin->getCurrencyManager()->getSymbol();
     }
 
     /**

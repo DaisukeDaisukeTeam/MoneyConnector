@@ -33,6 +33,8 @@ use PJZ9n\MoneyConnector\Connectors\EconomyAPI;
 use PJZ9n\MoneyConnector\Connectors\LevelMoneySystem;
 use PJZ9n\MoneyConnector\Connectors\MixCoinSystem;
 use PJZ9n\MoneyConnector\Connectors\MoneySystem;
+use PJZ9n\MoneyConnector\Connectors\SimpleEconomy;
+use rark\simple_economy\api\SimpleEconomyAPI;
 
 abstract class MoneyConnectorUtils
 {
@@ -62,6 +64,9 @@ abstract class MoneyConnectorUtils
             case "levelmoneysystem":
                 return new LevelMoneySystem();
                 break;
+            case "simpleeconomy":
+                return new SimpleEconomy();
+                break;
 
         }
         return null;
@@ -87,6 +92,9 @@ abstract class MoneyConnectorUtils
             return new BedrockEconomy();
         }
         if (class_exists(main::class)) {
+            return new LevelMoneySystem();
+        }
+        if (class_exists(SimpleEconomyAPI::class)) {
             return new LevelMoneySystem();
         }
         return null;
