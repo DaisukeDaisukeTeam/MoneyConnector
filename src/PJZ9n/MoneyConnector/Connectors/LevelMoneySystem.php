@@ -29,15 +29,15 @@ use pocketmine\Server;
 
 class LevelMoneySystem implements MoneyConnector
 {
-
+    
     /** @var PLevelMoneySystem */
     private $parentAPI;
-
+    
     public function __construct()
     {
         $this->parentAPI = Server::getInstance()->getPluginManager()->getPlugin("LevelMoneySystem");
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -45,21 +45,21 @@ class LevelMoneySystem implements MoneyConnector
     {
         return "M";//HACK
     }
-
+    
     /**
      * @inheritDoc
      */
     public function getAllMoney(): array
     {
-
+        
         $allConfig = $this->parentAPI->config;
         $allMoney = [];
-        foreach($allConfig as $name => $money){
+        foreach ($allConfig as $name => $money) {
             $allMoney[$name] = (int)$money;
         }
         return $allMoney;
-	}
-
+    }
+    
     /**
      * @inheritDoc
      */
@@ -67,7 +67,7 @@ class LevelMoneySystem implements MoneyConnector
     {
         return $this->myMoneyByName($player->getName());
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -75,7 +75,7 @@ class LevelMoneySystem implements MoneyConnector
     {
         return $this->parentAPI->getMoney($player);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -83,7 +83,7 @@ class LevelMoneySystem implements MoneyConnector
     {
         return $this->addMoneyByName($player->getName(), $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -92,7 +92,7 @@ class LevelMoneySystem implements MoneyConnector
         $this->parentAPI->setMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -101,7 +101,7 @@ class LevelMoneySystem implements MoneyConnector
         $this->addMoneyByName($player->getName(), $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -110,7 +110,7 @@ class LevelMoneySystem implements MoneyConnector
         $this->parentAPI->addMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -118,7 +118,7 @@ class LevelMoneySystem implements MoneyConnector
     {
         return $this->reduceMoneyByName($player->getName(), $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -127,7 +127,7 @@ class LevelMoneySystem implements MoneyConnector
         $this->parentAPI->removeMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -135,7 +135,7 @@ class LevelMoneySystem implements MoneyConnector
     {
         return $this->parentAPI;
     }
-
+    
     /**
      * @inheritDoc
      */

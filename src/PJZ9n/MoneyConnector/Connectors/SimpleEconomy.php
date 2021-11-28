@@ -2,25 +2,23 @@
 
 namespace PJZ9n\MoneyConnector\Connectors;
 
-use hayao\main as PLevelMoneySystem;
 use PJZ9n\MoneyConnector\MoneyConnector;
 use pocketmine\player\Player;
-use pocketmine\Server;
 use rark\simple_economy\Account;
 use rark\simple_economy\api\SimpleEconomyAPI;
 
 class SimpleEconomy implements MoneyConnector
 {
     protected const CURRENCY = "yen";
-
+    
     /** @var SimpleEconomyAPI */
     private $parentAPI;
-
+    
     public function __construct()
     {
         $this->parentAPI = new SimpleEconomyAPI(self::CURRENCY);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -28,20 +26,21 @@ class SimpleEconomy implements MoneyConnector
     {
         return self::CURRENCY;//HACK
     }
-
+    
     /**
      * @inheritDoc
      */
     public function getAllMoney(): array
     {
         //HACK
-        $function = function(){
+        $function = function ()
+        {
             return self::$instances;
         };
         $function = $function->bindTo(null, Account::class);
         /** @var Account[] $instances */
         $instances = $function();
-
+        
         $allMoney = [];
         foreach ($instances as $account) {
             $username = $account->getName();
@@ -49,7 +48,7 @@ class SimpleEconomy implements MoneyConnector
         }
         return $allMoney;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -57,7 +56,7 @@ class SimpleEconomy implements MoneyConnector
     {
         return $this->myMoneyByName($player->getName());
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -65,7 +64,7 @@ class SimpleEconomy implements MoneyConnector
     {
         return $this->parentAPI->myMoney($player);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -73,7 +72,7 @@ class SimpleEconomy implements MoneyConnector
     {
         return $this->addMoneyByName($player->getName(), $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -82,7 +81,7 @@ class SimpleEconomy implements MoneyConnector
         $this->parentAPI->setMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -91,7 +90,7 @@ class SimpleEconomy implements MoneyConnector
         $this->addMoneyByName($player->getName(), $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -100,7 +99,7 @@ class SimpleEconomy implements MoneyConnector
         $this->parentAPI->addMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -108,7 +107,7 @@ class SimpleEconomy implements MoneyConnector
     {
         return $this->reduceMoneyByName($player->getName(), $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -117,7 +116,7 @@ class SimpleEconomy implements MoneyConnector
         $this->parentAPI->reduceMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -125,7 +124,7 @@ class SimpleEconomy implements MoneyConnector
     {
         return $this->parentAPI;
     }
-
+    
     /**
      * @inheritDoc
      */

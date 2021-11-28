@@ -23,8 +23,6 @@ declare(strict_types=1);
 
 namespace PJZ9n\MoneyConnector;
 
-use PJZ9n\MoneyConnector\Connectors\PocketMoney;
-use PocketMoney\PocketMoney as PluginPocketMoney;
 use cooldogedev\BedrockEconomy\BedrockEconomy as PBedrockEconomy;
 use hayao\main;
 use metowa1227\moneysystem\api\core\API;
@@ -35,7 +33,9 @@ use PJZ9n\MoneyConnector\Connectors\EconomyAPI;
 use PJZ9n\MoneyConnector\Connectors\LevelMoneySystem;
 use PJZ9n\MoneyConnector\Connectors\MixCoinSystem;
 use PJZ9n\MoneyConnector\Connectors\MoneySystem;
+use PJZ9n\MoneyConnector\Connectors\PocketMoney;
 use PJZ9n\MoneyConnector\Connectors\SimpleEconomy;
+use PocketMoney\PocketMoney as PluginPocketMoney;
 use rark\simple_economy\api\SimpleEconomyAPI;
 
 abstract class MoneyConnectorUtils
@@ -76,7 +76,7 @@ abstract class MoneyConnectorUtils
         }
         return null;
     }
-    
+
     /**
      * Returns the corresponding connector from the detected API. Returns null if not found.
      *

@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace PJZ9n\MoneyConnector\Connectors;
 
-use PJZ9n\MoneyConnector\MoneyConnector;
 use MixCoinSystem\MixCoinSystem as PMixCoinSystem;
+use PJZ9n\MoneyConnector\MoneyConnector;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
 

@@ -2,26 +2,26 @@
 
 namespace PJZ9n\MoneyConnector\Connectors;
 
+use cooldogedev\BedrockEconomy\BedrockEconomy as PBedrockEconomy;
 use cooldogedev\BedrockEconomy\constant\SearchConstants;
 use cooldogedev\BedrockEconomy\session\cache\SessionCache;
 use cooldogedev\BedrockEconomy\session\SessionManager;
 use PJZ9n\MoneyConnector\MoneyConnector;
 use pocketmine\player\Player;
-use pocketmine\Server;
-use cooldogedev\BedrockEconomy\BedrockEconomy as PBedrockEconomy;
+
 class BedrockEconomy implements MoneyConnector
 {
     /** @var PBedrockEconomy */
     private $parentPlugin;
     /** @var SessionManager */
     private $parentAPI;
-
+    
     public function __construct()
     {
         $this->parentPlugin = PBedrockEconomy::getInstance();
         $this->parentAPI = $this->parentPlugin->getSessionManager();
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -29,7 +29,7 @@ class BedrockEconomy implements MoneyConnector
     {
         return $this->parentPlugin->getCurrencyManager()->getSymbol();
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -37,13 +37,13 @@ class BedrockEconomy implements MoneyConnector
     {
         $allSessions = $this->parentAPI->getSessions();
         $allMoney = [];
-        foreach($allSessions as $xuid => $session){
+        foreach ($allSessions as $xuid => $session) {
             $cache = $session->getCache();
             $allMoney[$session->getUsername()] = $cache->getBalance();
         }
         return $allMoney;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -52,7 +52,7 @@ class BedrockEconomy implements MoneyConnector
         $cache = $this->getCacheByXuid($player);
         return $this->getBalance($cache);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -60,17 +60,17 @@ class BedrockEconomy implements MoneyConnector
     {
         $cache = $this->getCacheByName($player);
         return $this->getBalance($cache);
-
+        
     }
-
+    
     protected function getBalance(?SessionCache $cache): ?int
     {
-        if($cache === null){
+        if ($cache === null) {
             return null;
         }
         return $cache->getBalance();
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -79,7 +79,7 @@ class BedrockEconomy implements MoneyConnector
         $cache = $this->getCacheByXuid($player);
         return $this->setBalance($cache, $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -88,16 +88,16 @@ class BedrockEconomy implements MoneyConnector
         $cache = $this->getCacheByName($player);
         return $this->setBalance($cache, $amount);
     }
-
+    
     protected function setBalance(?SessionCache $cache, int $amount): int
     {
-        if($cache === null){
+        if ($cache === null) {
             return MoneyConnector::RETURN_NO_ACCOUNT;
         }
         $cache->setBalance($amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -106,7 +106,7 @@ class BedrockEconomy implements MoneyConnector
         $cache = $this->getCacheByXuid($player);
         return $this->addToBalance($cache, $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -115,16 +115,16 @@ class BedrockEconomy implements MoneyConnector
         $cache = $this->getCacheByName($player);
         return $this->addToBalance($cache, $amount);
     }
-
+    
     public function addToBalance(?SessionCache $cache, int $amount): int
     {
-        if($cache === null){
+        if ($cache === null) {
             return MoneyConnector::RETURN_NO_ACCOUNT;
         }
         $cache->addToBalance($amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -133,7 +133,7 @@ class BedrockEconomy implements MoneyConnector
         $cache = $this->getCacheByXuid($player);
         return $this->subtractFromBalance($cache, $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -142,16 +142,16 @@ class BedrockEconomy implements MoneyConnector
         $cache = $this->getCacheByName($player);
         return $this->subtractFromBalance($cache, $amount);
     }
-
+    
     protected function subtractFromBalance(?SessionCache $cache, int $amount): int
     {
-        if($cache === null){
+        if ($cache === null) {
             return MoneyConnector::RETURN_NO_ACCOUNT;
         }
         $cache->subtractFromBalance($amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -159,7 +159,7 @@ class BedrockEconomy implements MoneyConnector
     {
         return $this->parentAPI;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -167,23 +167,25 @@ class BedrockEconomy implements MoneyConnector
     {
         return "LevelMoneySystem";
     }
-
+    
     public function getCache(Player $player): ?SessionCache
     {
         return $this->getCacheByXuid($player->getXuid());
     }
-
-    protected function getCacheByName(string $player) : ?SessionCache{
+    
+    protected function getCacheByName(string $player): ?SessionCache
+    {
         $session = $this->parentAPI->getSession($player, SearchConstants::SEARCH_MODE_USERNAME);
-        if($session === null){
+        if ($session === null) {
             return null;
         }
         return $session->getCache();
     }
-
-    protected function getCacheByXuid(string $player) : ?SessionCache{
+    
+    protected function getCacheByXuid(string $player): ?SessionCache
+    {
         $session = $this->parentAPI->getSession($player);
-        if($session === null){
+        if ($session === null) {
             return null;
         }
         return $session->getCache();

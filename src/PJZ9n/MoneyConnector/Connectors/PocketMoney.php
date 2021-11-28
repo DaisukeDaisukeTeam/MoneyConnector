@@ -2,24 +2,24 @@
 
 namespace PJZ9n\MoneyConnector\Connectors;
 
-use PocketMoney\PocketMoney as PluginPocketMoney;
 use PJZ9n\MoneyConnector\MoneyConnector;
 use pocketmine\player\Player;
 use pocketmine\Server;
+use PocketMoney\PocketMoney as PluginPocketMoney;
 
 class PocketMoney implements MoneyConnector
 {
-
+    
     protected const KEYS_MONEY = "money";
-
+    
     /** @var PluginPocketMoney */
     private $parentAPI;
-
+    
     public function __construct()
     {
         $this->parentAPI = Server::getInstance()->getPluginManager()->getPlugin("PocketMoney");
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -27,24 +27,24 @@ class PocketMoney implements MoneyConnector
     {
         return "M";//HACK
     }
-
+    
     /**
      * @inheritDoc
      */
     public function getAllMoney(): array
     {
-
-        $property =  new \ReflectionProperty($this->parentAPI, "users");
+        
+        $property = new \ReflectionProperty($this->parentAPI, "users");
         $property->setAccessible(true);
         $users = $property->getValue($this->parentAPI);
         $allUser = $users->getAll();
         $allMoney = [];
-        foreach($allUser as $name => $data){
+        foreach ($allUser as $name => $data) {
             $allMoney[$name] = (int)$data[self::KEYS_MONEY];
         }
         return $allMoney;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -52,7 +52,7 @@ class PocketMoney implements MoneyConnector
     {
         return $this->myMoneyByName($player->getName());
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -60,7 +60,7 @@ class PocketMoney implements MoneyConnector
     {
         return $this->parentAPI->getMoney($player);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -68,7 +68,7 @@ class PocketMoney implements MoneyConnector
     {
         return $this->addMoneyByName($player->getName(), $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -77,7 +77,7 @@ class PocketMoney implements MoneyConnector
         $this->parentAPI->setMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -86,7 +86,7 @@ class PocketMoney implements MoneyConnector
         $this->addMoneyByName($player->getName(), $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -95,7 +95,7 @@ class PocketMoney implements MoneyConnector
         $this->parentAPI->grantMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -103,20 +103,20 @@ class PocketMoney implements MoneyConnector
     {
         return $this->reduceMoneyByName($player->getName(), $amount);
     }
-
+    
     /**
      * @inheritDoc
      */
     public function reduceMoneyByName(string $player, int $amount): int
     {
         $amount = $this->myMoneyByName($player) - $amount;
-        if($amount < 0){
+        if ($amount < 0) {
             $amount = 0;
         }
         $this->setMoneyByName($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -124,7 +124,7 @@ class PocketMoney implements MoneyConnector
     {
         return $this->parentAPI;
     }
-
+    
     /**
      * @inheritDoc
      */
