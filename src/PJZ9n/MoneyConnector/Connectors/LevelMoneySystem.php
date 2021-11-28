@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright (c) 2020 PJZ9n.
  *
@@ -23,50 +22,44 @@ declare(strict_types=1);
 
 namespace PJZ9n\MoneyConnector\Connectors;
 
+use hayao\main as PLevelMoneySystem;
 use PJZ9n\MoneyConnector\MoneyConnector;
-use MixCoinSystem\MixCoinSystem as PMixCoinSystem;
 use pocketmine\player\Player;
-use pocketmine\utils\Config;
+use pocketmine\Server;
 
-/**
- * Class MixCoinSystem
- * Connector for mixpowder/MixCoinSystem
- *
- * @package PJZ9n\MoneyConnector\Connectors
- */
-class MixCoinSystem implements MoneyConnector
+class LevelMoneySystem implements MoneyConnector
 {
-    /** @var PMixCoinSystem */
+
+    /** @var PLevelMoneySystem */
     private $parentAPI;
-    
+
     public function __construct()
     {
-        $this->parentAPI = PMixCoinSystem::getInstance();
+        $this->parentAPI = Server::getInstance()->getPluginManager()->getPlugin("LevelMoneySystem");
     }
-    
+
     /**
      * @inheritDoc
      */
     public function getMonetaryUnit(): string
     {
-        return "Coin";//HACK
+        return "M";//HACK
     }
-    
+
     /**
      * @inheritDoc
      */
     public function getAllMoney(): array
     {
-        /** @var Config $coinConfig */
-        $coinConfig = $this->parentAPI->Coin;
-        //to integer
+
+        $allConfig = $this->parentAPI->config;
         $allMoney = [];
-        foreach ($coinConfig->getAll() as $name => $coin) {
-            $allMoney[$name] = (int)$coin;
+        foreach($allConfig as $name => $money){
+            $allMoney[$name] = (int)$money;
         }
         return $allMoney;
-    }
-    
+	}
+
     /**
      * @inheritDoc
      */
@@ -74,49 +67,50 @@ class MixCoinSystem implements MoneyConnector
     {
         return $this->myMoneyByName($player->getName());
     }
-    
+
     /**
      * @inheritDoc
      */
     public function myMoneyByName(string $player): ?int
     {
-        return (int)$this->parentAPI->GetCoin($player);
+        return $this->parentAPI->getMoney($player);
     }
-    
+
     /**
      * @inheritDoc
      */
     public function setMoney(Player $player, int $amount): int
     {
-        return $this->setMoneyByName($player->getName(), $amount);
+        return $this->addMoneyByName($player->getName(), $amount);
     }
-    
+
     /**
      * @inheritDoc
      */
     public function setMoneyByName(string $player, int $amount): int
     {
-        $this->parentAPI->SetCoin($player, $amount);
+        $this->parentAPI->setMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-    
+
     /**
      * @inheritDoc
      */
     public function addMoney(Player $player, int $amount): int
     {
-        return $this->addMoneyByName($player->getName(), $amount);
+        $this->addMoneyByName($player->getName(), $amount);
+        return MoneyConnector::RETURN_SUCCESS;
     }
-    
+
     /**
      * @inheritDoc
      */
     public function addMoneyByName(string $player, int $amount): int
     {
-        $this->parentAPI->PlusCoin($player, $amount);
+        $this->parentAPI->addMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -124,31 +118,29 @@ class MixCoinSystem implements MoneyConnector
     {
         return $this->reduceMoneyByName($player->getName(), $amount);
     }
-    
+
     /**
      * @inheritDoc
      */
     public function reduceMoneyByName(string $player, int $amount): int
     {
-        $this->parentAPI->MinusCoin($player, $amount);
+        $this->parentAPI->removeMoney($player, $amount);
         return MoneyConnector::RETURN_SUCCESS;
     }
-    
+
     /**
      * @inheritDoc
-     *
-     * @return PMixCoinSystem
      */
-    public function getParentAPIInstance(): Object
+    public function getParentAPIInstance(): object
     {
         return $this->parentAPI;
     }
-    
+
     /**
      * @inheritDoc
      */
     public function getName(): string
     {
-        return "MixCoinSystem";
+        return "LevelMoneySystem";
     }
 }

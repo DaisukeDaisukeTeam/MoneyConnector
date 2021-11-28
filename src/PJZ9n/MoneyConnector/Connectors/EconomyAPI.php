@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace PJZ9n\MoneyConnector\Connectors;
 
 use PJZ9n\MoneyConnector\MoneyConnector;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use onebone\economyapi\EconomyAPI as PEconomyAPI;
 
 /**

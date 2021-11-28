@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace PJZ9n\MoneyConnector;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Interface MoneyConnector

@@ -23,10 +23,14 @@ declare(strict_types=1);
 
 namespace PJZ9n\MoneyConnector;
 
+use cooldogedev\BedrockEconomy\BedrockEconomy as PBedrockEconomy;
+use hayao\main;
 use metowa1227\moneysystem\api\core\API;
 use MixCoinSystem\MixCoinSystem as PMixCoinSystem;
 use onebone\economyapi\EconomyAPI as PEconomyAPI;
+use PJZ9n\MoneyConnector\Connectors\BedrockEconomy;
 use PJZ9n\MoneyConnector\Connectors\EconomyAPI;
+use PJZ9n\MoneyConnector\Connectors\LevelMoneySystem;
 use PJZ9n\MoneyConnector\Connectors\MixCoinSystem;
 use PJZ9n\MoneyConnector\Connectors\MoneySystem;
 
@@ -52,6 +56,13 @@ abstract class MoneyConnectorUtils
             case "moneysystem":
                 return new MoneySystem();
                 break;
+            case "bedrockeconomy":
+                return new BedrockEconomy();
+                break;
+            case "levelmoneysystem":
+                return new LevelMoneySystem();
+                break;
+
         }
         return null;
     }
@@ -71,6 +82,12 @@ abstract class MoneyConnectorUtils
         }
         if (class_exists(API::class)) {
             return new MoneySystem();
+        }
+        if (class_exists(PBedrockEconomy::class)) {
+            return new BedrockEconomy();
+        }
+        if (class_exists(main::class)) {
+            return new LevelMoneySystem();
         }
         return null;
     }

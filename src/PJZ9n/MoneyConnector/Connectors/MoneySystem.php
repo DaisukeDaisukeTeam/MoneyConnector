@@ -25,7 +25,7 @@ namespace PJZ9n\MoneyConnector\Connectors;
 
 use metowa1227\moneysystem\api\core\API;
 use PJZ9n\MoneyConnector\MoneyConnector;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class MoneySystem
